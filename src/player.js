@@ -1,6 +1,6 @@
 /*  Author: Andre Bakker, VexUI project
  *  This class requires the MIDI.js in the project to work correctly.
- * 
+ *
  */
 
 Player = function(){ //(handler){
@@ -50,7 +50,7 @@ Player.prototype.addEvents = function(eventList){
 };
 
 Player.prototype.play = function(self){
-  console.log('player play()');
+  console.log('[INFO] Player playing...');
   if(self === undefined)
     self = this;
   self.playing = true;
@@ -58,13 +58,13 @@ Player.prototype.play = function(self){
     self.playing = false;
     return self.callback();
   }
-  
+
   var event = self.events[self.currentEventIndex];
-  
+
   if(self.currentTime <= event.queuedTime){
     //Fire the event
     self.fireEvent(event);
-    
+
     //Increment the current event and add current time
     if(self.currentEventIndex + 1 >= self.events.length){
       self.playing = false;
@@ -72,17 +72,17 @@ Player.prototype.play = function(self){
     }
     var timeUntilNextEvent = self.events[self.currentEventIndex + 1].queuedTime -
                 self.events[self.currentEventIndex].queuedTime;
-    
+
     self.currentEventIndex++;
     self.currentTime += timeUntilNextEvent;
-    
+
     self.scheduledId = setTimeout(self.play, timeUntilNextEvent * 1000, self);
   }
-  
+
 };
 
 Player.prototype.stop = function(){
-  console.log('player stop');
+  console.log('[INFO] Player stopping...');
   if(this.scheduledId){
     clearTimeout(this.scheduledId);
     this.clear();
@@ -129,16 +129,10 @@ Player.prototype.clear = function(){
   this.currentEventIndex = 0;
 };
 
-
-
-
-
-
-
 editor.player = new Player();
 
 editor.play = function(){
-  console.log('editor play()');
+  console.log('[INFO] Editor playing...');
   var playButton, stopButton;
 
   playButton = document.getElementById("button-play");
@@ -150,7 +144,7 @@ editor.play = function(){
 
   //TODO RPM should be set outside...
   var rpm = 120;
-  var playInfo = { 
+  var playInfo = {
       delay: 0,
       rpm: rpm,
       defaultTime : (rpm / 60) // to seconds
@@ -176,20 +170,20 @@ editor.play = function(){
     // var barNote = new Vex.Flow.BarNote();
     // barNote.setType(stave.modifiers[0].barline);
     // playEvents = playEvents.concat(barNote.getPlayEvents(playInfo, playEvents));
-    
+
     var j = (i == selMeasureIn) ? selNoteIn : 0;
 
     for(; j < gl_VfStaveNotes[i].length; j++){
 
       var staveNote = gl_VfStaveNotes[i][j];
       playEvents = playEvents.concat(staveNote.getPlayEvents(playInfo));//, playEvents));
-    }   
+    }
 
     //Call final barline play events
     // barNote.setType(stave.modifiers[1].barline);
     // playEvents = playEvents.concat(barNote.getPlayEvents(playInfo, playEvents));
   }
-  
+
   editor.player.addEvents(playEvents);
   editor.player.onPlayFinished(function(){
     //Reenable play and disable stop
@@ -200,9 +194,9 @@ editor.play = function(){
 };
 
 editor.stop = function(){
-  console.log('editor stop');
+  console.log('[INFO] Editor stopping...');
   editor.player.stop();
-    
+
   playButton = document.getElementById("button-play");
   stopButton = document.getElementById("button-stop");
 

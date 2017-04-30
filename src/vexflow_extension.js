@@ -86,7 +86,7 @@ Vex.Flow.StaveNote.prototype.removeDot = function(){
 Vex.Flow.StaveNote.prototype.getPlayEvents = function(playInfo){
   //Prepare the notes to be sent
   var notes = [];
-  
+
   for(var i = 0; i < this.keys.length; i++){
     notes.push(MIDI.keyToNote[this.keys[i].replace('/','').toUpperCase()]);
   }
@@ -127,7 +127,7 @@ Vex.Flow.StaveNote.prototype.getPlayEvents = function(playInfo){
     else if(modifier instanceof Vex.Flow.Dot){
       keyPressTime *= 1.5;
     }
-    
+
   };
 
   // we don't play rests
@@ -156,9 +156,9 @@ Vex.Flow.StaveNote.prototype.getPlayEvents = function(playInfo){
     note: this
   });
 
-  
-  //increment the delay 
+
+  //increment the delay
   playInfo.delay = playInfo.delay + keyPressTime;
-  
+
   return events;
 };

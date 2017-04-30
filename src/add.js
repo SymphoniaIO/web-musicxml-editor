@@ -1,35 +1,33 @@
 /*
-module for note/measure addition...
-*/
+ * module for note/measure addition...
+ */
 editor.add = {
-  // inserts new measure filled with whole rest AFTER selected measure
-  measure: function(){
-    // get and parse id of selected measure (id='m13')
-    var measureIndex = +editor.selected.measure.id.split('m')[1];
+  /**
+   * Inserts new measure filled with whole rest AFTER selected measure
+   */
+  measure: function() {
+    console.log("[INFO] Adding measure...");
+    var selMeasureIndex = getSelectedMeasureIndex();
+    var newMeasureIndex = selMeasureIndex + 1;
+    console.log("[DEBUG] Selected Measure Index..." + selMeasureIndex);
 
-    // create new Vex.Flow.Stave, positions will be set in draw function
+    // Create new Vex.Flow.Stave. Positions will be set in draw function.
     var vfNewStave = new Vex.Flow.Stave(0, 0, editor.staveWidth);
-    // add measure to global array of Vex.Flow Staves
-    // splice adds before, but we need to insert after - reason for measureIndex + 1
-    // splice also takes higher index than biggest as biggest
-    gl_VfStaves.splice(measureIndex + 1, 0, vfNewStave);
+
+    // Add new measure to global array of Vex.Flow Staves, inserting before element at newMeasureIndex
+    gl_VfStaves.splice(newMeasureIndex, 0, vfNewStave);
     // add empty attributes for measure
-    gl_StaveAttributes.splice(measureIndex + 1, 0, {});
+    gl_StaveAttributes.splice(newMeasureIndex, 0, {});
     // fill measure with whole rest
     var wholeRest = new Vex.Flow.StaveNote({ keys: ["b/4"], duration: "wr" });
-    wholeRest.setId('m' + measureIndex + 'n0');
-    gl_VfStaveNotes.splice(measureIndex + 1, 0, [wholeRest]);
+    wholeRest.setId('m' + selMeasureIndex + 'n0');
+    gl_VfStaveNotes.splice(newMeasureIndex, 0, [wholeRest]);
 
-    // re-number all following notes ids in measures in part
-    for(var m = measureIndex + 1; m < gl_VfStaveNotes.length; m++) {
-      for(var n = 0; n < gl_VfStaveNotes[m].length; n++) {
-        gl_VfStaveNotes[m][n].setId('m' + m + 'n' + n);
-      }
-    }
+    correctVFStaveIds(newMeasureIndex);
 
     // add new measure to scoreJson
     var newMeasure = {
-      '@number': measureIndex + 2,
+      '@number': newMeasureIndex + 1, // Measures not zero-indexed
       note: [
         {
           '@measure' : 'yes',
@@ -38,19 +36,18 @@ editor.add = {
         }
       ]
     };
-    // insert new measure to json
-    scoreJson["score-partwise"].part[0].measure.splice(measureIndex + 1, 0, newMeasure);
-    
-    // shift numbering for all following measures in part
-    for(var m = measureIndex + 1; m < scoreJson["score-partwise"].part[0].measure.length; m++) {
-      scoreJson["score-partwise"].part[0].measure[m]["@number"] = m + 1;
-    }
+
+    // Insert new measure to scoreJson
+    scoreJson["score-partwise"].part[0].measure.splice(newMeasureIndex, 0, newMeasure);
+
+    correctJSONMeasureNumbers(newMeasureIndex);
   },
   note: function(){
+    console.log("[INFO] Adding note...");
     // get and parse id of selected note (id='m13n10')
     var measureIndex = getSelectedMeasureIndex();
-    var noteIndex = getSelectedNoteIndex();
-    var vfStaveNote = gl_VfStaveNotes[measureIndex][noteIndex];
+    var noteIndex    = getSelectedNoteIndex();
+    var vfStaveNote  = gl_VfStaveNotes[measureIndex][noteIndex];
 
     var noteValue = getRadioValue('note-value');
     // var noteValue = vfStaveNote.getDuration();     //w, h, q, 8, 16
@@ -66,8 +63,9 @@ editor.add = {
     // set id for note DOM element in svg
     newNote.setId(editor.selected.note.id);
 
-    if(dot === 'd')
+    if(dot === 'd') {
       newNote.addDotToAll();
+    }
 
     // put new note in place of selected rest
     gl_VfStaveNotes[measureIndex].splice(noteIndex, 1, newNote);
@@ -86,13 +84,13 @@ editor.add = {
     var xmlDuration = editor.NoteTool.getDurationFromStaveNote(newNote, divisions);
     scoreJson["score-partwise"].part[0].measure[measureIndex].note[noteIndex].duration = xmlDuration;
 
-    editor.svgElem.removeEventListener('click', editor.add.note, false); 
+    editor.svgElem.removeEventListener('click', editor.add.note, false);
     editor.draw.selectedMeasure(false);
 
     // fluent creating of score:
     // add new measure, if current one is the last one and the note is also the last one
-    if(measureIndex === gl_VfStaves.length - 1 &&
-       noteIndex === gl_VfStaveNotes[measureIndex].length - 1) {
+    if(measureIndex === gl_VfStaves.length - 1
+      && noteIndex === gl_VfStaveNotes[measureIndex].length - 1) {
       editor.add.measure();
       // select first note in added measure
       measureIndex++;
@@ -103,6 +101,7 @@ editor.add = {
 
   },
   clef: function(){
+    console.log("[INFO] Adding clef...");
     var clefDropdown = $('#clef-dropdown').val();
     // console.log('add clef: '+clefDropdown);
     var measureIndex = getSelectedMeasureIndex();
@@ -137,7 +136,8 @@ editor.add = {
       }
     }
   },
-  keySignature: function(){ 
+  keySignature: function() {
+    console.log("[INFO] Adding key signature...");
     var keySig = $('#keySig-dropdown').val();
 
     var measureIndex = getSelectedMeasureIndex();
@@ -145,6 +145,7 @@ editor.add = {
 
     var currentKeysig = getCurAttrForMeasure(measureIndex, 'vfKeySpec');
 
+    // Only add a new key if it is different than the current key
     if(keySig !== currentKeysig) {
       vfStave.setKeySignature(keySig);
 
@@ -169,12 +170,14 @@ editor.add = {
         vfStave.removeKeySignature();
         delete gl_StaveAttributes[measureIndex].vfKeySpec;
         delete gl_StaveAttributes[measureIndex].xmlFifths;
-        if(scoreJson["score-partwise"].part[0].measure[measureIndex].attributes)
+        if(scoreJson["score-partwise"].part[0].measure[measureIndex].attributes) {
           delete scoreJson["score-partwise"].part[0].measure[measureIndex].attributes.key;
+        }
       }
     }
   },
-  timeSignature: function(){
+  timeSignature: function() {
+    console.log("[INFO] Adding time signature...");
     var top = $('#timeSigTop').val();
     var bottom = $('#timeSigBottom').val();
     var timeSig = top + '/' + bottom;
@@ -201,12 +204,14 @@ editor.add = {
       if(timeSig === previousTimesig) {
         vfStave.removeTimeSignature();
         delete gl_StaveAttributes[measureIndex].vfTimeSpec;
-        if(scoreJson["score-partwise"].part[0].measure[measureIndex].attributes)
+        if(scoreJson["score-partwise"].part[0].measure[measureIndex].attributes) {
           delete scoreJson["score-partwise"].part[0].measure[measureIndex].attributes.time;
+        }
       }
     }
   },
   accidental: function(){
+    console.log("[INFO] Adding accidental...");
     var vexAcc = getRadioValue('note-accidental');
 
     var vfStaveNote = getSelectedNote();
@@ -218,9 +223,11 @@ editor.add = {
 
       // add accidental to json
       var xmlAcc = '';
-      for(var xmlname in editor.table.ACCIDENTAL_DICT)
-        if(vexAcc === editor.table.ACCIDENTAL_DICT[xmlname])
+      for(var xmlname in editor.table.ACCIDENTAL_DICT) {
+        if(vexAcc === editor.table.ACCIDENTAL_DICT[xmlname]) {
           xmlAcc = xmlname;
+        }
+      }
       scoreJson["score-partwise"].part[0].measure[measureIndex].note[noteIndex].accidental = xmlAcc;
     }
   }

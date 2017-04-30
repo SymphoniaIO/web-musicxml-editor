@@ -1,22 +1,22 @@
 /*
-Project: Concerto
-  https://github.com/panarch/concerto
-Code authors:
-  Taehoon Moon <panarch@kaist.ac.kr>, 2014
-Licensed under MIT license
-  https://github.com/panarch/concerto/blob/master/LICENSE
-Modifications:
-  minor modifications: Tomas Hudziec 2016
-*/
+ * Project: Concerto
+ *   https://github.com/panarch/concerto
+ * Code authors:
+ *   Taehoon Moon <panarch@kaist.ac.kr>, 2014
+ * Licensed under MIT license
+ *   https://github.com/panarch/concerto/blob/master/LICENSE
+ * Modifications:
+ *   minor modifications: Tomas Hudziec 2016
+ */
 
 editor.table = {};
 
 editor.table.ACCIDENTAL_DICT = {
-          'sharp': '#',
-   'double-sharp': '##',
-        'natural': 'n',
-           'flat': 'b',
-      'flat-flat': 'bb'
+         'sharp': '#',
+  'double-sharp': '##',
+       'natural': 'n',
+          'flat': 'b',
+     'flat-flat': 'bb'
 // 'double-flat' doesn't exists in MusicXML, it's named 'flat-flat' instead
 };
 
@@ -42,79 +42,77 @@ editor.table.NOTE_VEX_TYPES = ['1024', '512', '256', '128',
     'w', 'w'];
 
 editor.table.NOTE_TYPE_DICT = {
-    '1024th': '64',
-     '512th': '64',
-     '256th': '64',
-     '128th': '128',
-      '64th': '64',
-      '32nd': '32',
-      '16th': '16',
-    'eighth': '8',
-   'quarter': 'q',
-      'half': 'h',
-     'whole': 'w',
-     'breve': 'w',
-      'long': 'w',
-    'maxima': 'w'
+   '1024th': '64',
+    '512th': '64',
+    '256th': '64',
+    '128th': '128',
+     '64th': '64',
+     '32nd': '32',
+     '16th': '16',
+   'eighth': '8',
+  'quarter': 'q',
+     'half': 'h',
+    'whole': 'w',
+    'breve': 'w',
+     'long': 'w',
+   'maxima': 'w'
 };
 
-editor.table.NOTE_VEX_TYPE_DICT = {
-
-};
+editor.table.NOTE_VEX_TYPE_DICT = {};
 
 editor.table.DURATION_DICT = {
-  'w' : '1',
-  'h' : '2',
-  'q' : '4',
-  '8' : '8',
-  '16' : '16',
-  '32' : '32',
-  '64' : '64',
-  '128' : '128'
+  'w': '1',
+  'h': '2',
+  'q': '4',
+  '8': '8',
+  '16': '16',
+  '32': '32',
+  '64': '64',
+  '128': '128'
 };
 
 editor.table.CLEF_TYPE_DICT = {
-    'G/2': 'treble',
-    'F/4': 'bass',
-    'C/3': 'alto',
-    'C/4': 'tenor',
-    'C/1': 'soprano',
-    'C/2': 'mezzo-soprano',
-    'C/5': 'baritone-c',
-    'F/3': 'baritone-f',
-    'F/5': 'subbass',
-    'G/1': 'french',
-    'percussion/2': 'percussion'
+  'G/2': 'treble',
+  'F/4': 'bass',
+  'C/3': 'alto',
+  'C/4': 'tenor',
+  'C/1': 'soprano',
+  'C/2': 'mezzo-soprano',
+  'C/5': 'baritone-c',
+  'F/3': 'baritone-f',
+  'F/5': 'subbass',
+  'G/1': 'french',
+  'percussion/2': 'percussion'
 };
 
 editor.table.CLEF_VEX_TYPE_DICT = {
-           'treble': 'G/2',
-             'bass': 'F/4',
-             'alto': 'C/3',
-            'tenor': 'C/4',
-          'soprano': 'C/1',
-    'mezzo-soprano': 'C/2',
-       'baritone-c': 'C/5',
-       'baritone-f': 'F/3',
-          'subbass': 'F/5',
-           'french': 'G/1',
-       'percussion': 'percussion/2'
+         'treble': 'G/2',
+           'bass': 'F/4',
+           'alto': 'C/3',
+          'tenor': 'C/4',
+        'soprano': 'C/1',
+  'mezzo-soprano': 'C/2',
+     'baritone-c': 'C/5',
+     'baritone-f': 'F/3',
+        'subbass': 'F/5',
+         'french': 'G/1',
+     'percussion': 'percussion/2'
 };
 
 editor.table.STAVE_DEFAULT_OPTIONS = {
-    'space_above_staff_ln': 0
+  'space_above_staff_ln': 0
 };
 
 editor.MidiClefOffsets = {
   "treble": 0,
   "bass" : -21,
   "alto": -10,
-    "tenor": -14,
-    "percussion": 0,
-    "soprano": -4,
-    "mezzo-soprano": -7,
-    "baritone-c": -17,
-    "baritone-f": -17,
-    "subbass": -24,
-    "french": 6 
+  "tenor": -14,
+  "percussion": 0,
+  "soprano": -4,
+  "mezzo-soprano": -7,
+  "baritone-c": -17,
+  "baritone-f": -17,
+  "subbass": -24,
+  "french": 6
 };

@@ -57,7 +57,7 @@
             <div class="tool-section">
               <label>Clef:</label>
               <select id="clef-dropdown">
-                <option>treble</option>
+                <option selected>treble</option>
                 <option>bass</option>
                 <option>alto</option>
                 <option>tenor</option>
@@ -66,7 +66,7 @@
             <div class="tool-section">
               <label>Key Signature:</label>
               <select id="keySig-dropdown">
-                <option>C</option>
+                <option selected>C</option>
                 <option>G</option>
                 <option>D</option>
                 <option>A</option>
@@ -168,6 +168,7 @@
             </div>
 
             <div class="tool-section">
+              <!-- TODO Remove inline JS -->
               <button class="btn btn-danger" onclick="editor.delete.note(); editor.draw.selectedMeasure(false);">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
               </button>
@@ -196,7 +197,7 @@
     <footer>
       <a href="https://github.com/SymphoniaIO/web-musicxml-editor">github page</a>
       <!-- remote libraries -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script> 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
       <!-- local libraries -->
       <script src="lib/vexflow-debug.js"></script>
@@ -226,13 +227,9 @@
       <script src="src/listeners.js"></script>
       <script src="src/file_upload.js"></script>
       <script src="src/file_download.js"></script>
-      <!-- initialization -->
       <script>
         initUI();
-        editor.parse.all();
-        switchToNoteMode();
       </script>
     </footer>
-    
   </body>
 </html>

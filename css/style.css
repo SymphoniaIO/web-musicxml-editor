@@ -42,7 +42,7 @@ input[type="radio"]+label>img {
 
 input[type="radio"]:checked+label>img {
   border: 1px solid red;
-} 
+}
 
 .biggerIcon {
   width: 50%;
@@ -53,6 +53,17 @@ input[type="radio"]:checked+label>img {
   width: 70%;
   height: 70%;
 }
+
+.hoveredMeasure {
+  fill: #428bca;
+  opacity: 0.1;
+}
+
+.highlightedMeasure {
+  fill: #428bca;
+  opacity: 0.4;
+}
+
 footer {
   text-align: center;
 }

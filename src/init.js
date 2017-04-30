@@ -1,11 +1,13 @@
-/** Web Editor of MusicXML Files
-  *
-  * (c) Thomas Hudziec, 2016
-  * https://github.com/freetomik/web-musicxml-editor
-  * MIT license
+/**
+ * Web Editor of MusicXML Files
+ *
+ * (c) Thomas Hudziec, 2016
+ * https://github.com/freetomik/web-musicxml-editor
+ * MIT license
  */
 
-scoreJson = {
+// Initialize the score object.
+var scoreJson = {
   'score-partwise': {
     '@version': '3.0',
     'part-list': {
@@ -20,6 +22,7 @@ scoreJson = {
         measure: [
           {
             '@number': 1,
+            // '@width': 150,
             attributes: {
               divisions: 4,
               key: {
@@ -48,31 +51,38 @@ scoreJson = {
   }
 };
 
-uploadedFileName = 'score';
+// Default file name.
+var uploadedFileName = 'score';
 
 // one <measure> in MusicXML -> one Vex.Flow.Stave
 // all of these three arrays below use share same index
-gl_VfStaves = [];       // array with currently rendered vexflow measures(Vex.Flow.Stave)
-gl_StaveAttributes = [];  // array of attributes for each measure
-gl_VfStaveNotes = [];   // array of arrays with notes to corresponding stave in gl_VfStaves
+var gl_VfStaves        = []; // array with currently rendered vexflow measures(Vex.Flow.Stave)
+var gl_StaveAttributes = []; // array of attributes for each measure
+var gl_VfStaveNotes    = []; // array of arrays with notes to corresponding stave in gl_VfStaves
 
-editor = {};
+var editor = {};
 editor.svgElem = $("#svg-container")[0];
 // editor.renderer = new Vex.Flow.Renderer('svg-container', Vex.Flow.Renderer.Backends.SVG);
 editor.renderer = new Vex.Flow.Renderer(editor.svgElem, Vex.Flow.Renderer.Backends.SVG);
-editor.ctx = editor.renderer.getContext();    //SVGContext
+editor.ctx = editor.renderer.getContext(); //SVGContext
 
-// some default sizes
-editor.staveWidth = 150;
+// TODO: Consider moving these to table.js as Constants
+editor.staveWidth  = 150;
 editor.staveHeight = 140;
-editor.noteWidth = 40;
+editor.noteWidth   = 40;
 
-editor.mode = "measure";    // measure or note
-editor.measureColor = "#428bca";
+// TODO: Use an enum approach to mode,
+// as many comparisons are made and an enum approach would be more efficient.
+// https://stijndewitt.com/2014/01/26/enums-in-javascript/
+editor.mode = ""; // measure or note
 
+/*
+ * Initialize the window upon loading the page.
+ */
 function initUI() {
+  console.log("[INFO] Initializing UI...")
   editor.selected = {
-    cursorNoteKey: 'b/4',
+    cursorNoteKey: editor.table.DEFAULT_REST_PITCH,
     measure: {
       id: 'm0',
       previousId: 'm0'
@@ -81,7 +91,7 @@ function initUI() {
       id: 'm0n0',
       previousId: 'm0n0'
     }
-  }
+  };
 
   editor.mousePos = {
     current: {
@@ -92,7 +102,7 @@ function initUI() {
       x: 0,
       y: 0
     }
-  }
+  };
 
   // uncheck checked accidental radio button
   $("input:radio[name='note-accidental']:checked").prop("checked", false);
@@ -100,18 +110,13 @@ function initUI() {
   $("input:radio[name='note-value']:checked").prop("checked", false);
   // check whole note radio button
   $("input:radio[name='note-value'][value='w']").prop("checked", true);
-  // examples dropdown
-  $("#examples-dropdown").val("default");
-  // uncheck doted checkbox
+  // uncheck dotted checkbox
   $("#dotted-checkbox").prop("checked", false);
-  // set selected clef to treble
-  $("#clef-dropdown").val("treble");
-  // set selected key signature to C
-  $("#keySig-dropdown").val("C");
-  // set selected time signature to 4/4
-  $("#timeSigTop").val("4");
-  $("#timeSigBottom").val("4");
 
   $("#button-play").prop("disabled", false);
   $("#button-stop").prop("disabled", true);
+
+  editor.parse.all();
+  switchToNoteMode();
+  editor.draw.score();
 }

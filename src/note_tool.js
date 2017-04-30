@@ -1,13 +1,13 @@
 /*
-Project: Concerto
-  https://github.com/panarch/concerto
-Code authors:
-  Taehoon Moon <panarch@kaist.ac.kr>, 2014
-Licensed under MIT license
-  https://github.com/panarch/concerto/blob/master/LICENSE
-Modifications:
-  function transposeNote created by Thomas Hudziec, 2016
-*/
+ * Project: Concerto
+ *   https://github.com/panarch/concerto
+ * Code authors:
+ *   Taehoon Moon <panarch@kaist.ac.kr>, 2014
+ * Licensed under MIT license
+ *   https://github.com/panarch/concerto/blob/master/LICENSE
+ * Modifications:
+ *   function transposeNote created by Thomas Hudziec, 2016
+ */
 
 editor.NoteTool = {};
 

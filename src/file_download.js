@@ -2,13 +2,11 @@ function xmlToString(xmlData) {
   try {
     // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
     return (new XMLSerializer()).serializeToString(xmlData);
-  }
-  catch (e) {
+  } catch (e) {
     try {
       // IE
       return xmlData.xml;
-    }
-    catch (e) {  
+    } catch (e) {
       //Other browsers without XML Serializer
       alert('Xmlserializer not supported');
     }
@@ -26,16 +24,16 @@ function setupDownloadLink(link) {
 }
 
 /*
-Project: Code from StackOverflow page
-  http://stackoverflow.com/questions/376373/pretty-printing-xml-with-javascript
-Code authors:
-  Darin Dimitrov - http://stackoverflow.com/users/29407/darin-dimitrov
-  schellsan - http://stackoverflow.com/users/223455/schellsan
-Licensed under CC-Wiki
-  http://creativecommons.org/licenses/by-sa/3.0/
-Modifications:
-  two lines of code before return added by Thomas Hudziec, 2016
-*/
+ * Project: Code from StackOverflow page
+ *   http://stackoverflow.com/questions/376373/pretty-printing-xml-with-javascript
+ * Code authors:
+ *   Darin Dimitrov - http://stackoverflow.com/users/29407/darin-dimitrov
+ *   schellsan - http://stackoverflow.com/users/223455/schellsan
+ * Licensed under CC-Wiki
+ *   http://creativecommons.org/licenses/by-sa/3.0/
+ * Modifications:
+ *   two lines of code before return added by Thomas Hudziec, 2016
+ */
 function formatXml(xml) {
     var reg = /(>)\s*(<)(\/*)/g;
     var wsexp = / *(.*) +\n/g;
@@ -46,7 +44,7 @@ function formatXml(xml) {
     var lines = xml.split('\n');
     var indent = 0;
     var lastType = 'other';
-    // 4 types of tags - single, closing, opening, other (text, doctype, comment) - 4*4 = 16 transitions 
+    // 4 types of tags - single, closing, opening, other (text, doctype, comment) - 4*4 = 16 transitions
     var transitions = {
         'single->single'    : 0,
         'single->closing'   : -1,
@@ -57,7 +55,7 @@ function formatXml(xml) {
         'closing->opening'  : 0,
         'closing->other'    : 0,
         'opening->single'   : 1,
-        'opening->closing'  : 0, 
+        'opening->closing'  : 0,
         'opening->opening'  : 1,
         'opening->other'    : 1,
         'other->single'     : 0,
