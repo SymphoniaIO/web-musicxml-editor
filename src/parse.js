@@ -58,7 +58,8 @@ editor.parse = {
       // xmlFifths: 0,
       // xmlDivisions: 4,
       // vfKeySpec: '',
-      // vfTimeSpec: '' 
+      // vfTimeSpec: ''
+      // vfStavewidth: 150
     };
 
     // create one Vex.Flow.Stave, it corresponds to one <measure>
@@ -77,7 +78,7 @@ editor.parse = {
 
         staveAttributes.xmlClef = clef.sign + '/' + clef.line;
         staveAttributes.vfClef = editor.table.CLEF_TYPE_DICT[staveAttributes.xmlClef];
-        vfStave.setClef(staveAttributes.vfClef);  
+        vfStave.setClef(staveAttributes.vfClef);
         vfStave.setWidth(vfStave.getWidth() + 80);
         // editor.currentClef = vfClefType;
       }
@@ -117,6 +118,8 @@ editor.parse = {
       if(xmlAttributes.divisions) {
         staveAttributes.xmlDivisions = xmlAttributes.divisions;
       }
+
+      staveAttributes.vfStavewidth = vfStave.getWidth();
 
     }
 

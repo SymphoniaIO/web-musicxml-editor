@@ -79,7 +79,7 @@ editor.draw = {
         // editor.ctx.resize(canvasWidth, staveY + editor.staveHeight);
       }
 
-      // set position and width of stave 
+      // set position and width of stave
       stave.setX(staveX);
       stave.setY(staveY);
       // if measure doesn't have its own width(set as attribute in xml)
@@ -101,10 +101,9 @@ editor.draw = {
         if(!numOfAcc)
           numOfAcc = editor.table.FLAT_MAJOR_KEY_SIGNATURES.indexOf(attributes.vfKeySpec) + 1;
 
-        // TODO extend width of measure with clef | keysig | timesig
-        // stave.setWidth(stave.getWidth() + 80 + numOfAcc * 20);
-        // not good solution, it would grow after each draw call
-
+        // extend width of measure with clef | keysig | timesig
+        staveWidth = attributes.vfStavewidth;
+        stave.setWidth(staveWidth);
       }
       // remove clef and key signature when not newline
       else {

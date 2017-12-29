@@ -35,11 +35,11 @@ function attachListenersToMeasureRect(measureRectElem) {
   });
   measureRectElem.on('mouseenter', function() {
     if(editor.selected.measure.id !== $(this).attr('id'))
-      $(this).css({'fill': editor.measureColor, 'opacity': '0.1'}); 
+      $(this).css({'fill': editor.measureColor, 'opacity': '0.1'});
   });
   measureRectElem.on('mouseleave', function() {
     if(editor.selected.measure.id !== $(this).attr('id'))
-      $(this).css({'fill': 'transparent'}); 
+      $(this).css({'fill': 'transparent'});
   });
 }
 
@@ -100,6 +100,7 @@ $("#clef-dropdown").on("change", function() {
   // see comment in util.js in highlightSelectedMeasureProperties()
   if(!gl_selectBoxChangeOnMeasureSelect) {
     editor.add.clef();
+    editor.parse.all();
     editor.draw.score();
   }
 });
@@ -109,6 +110,7 @@ $("#keySig-dropdown").on("change", function() {
   // see comment in util.js in highlightSelectedMeasureProperties()
   if(!gl_selectBoxChangeOnMeasureSelect) {
     editor.add.keySignature();
+    editor.parse.all();
     editor.draw.score();
   }
 });
@@ -123,6 +125,7 @@ $("#examples-dropdown").on("change", function() {
 $("#timeSig-button").on("click", function() {
   editor.add.timeSignature();
   // editor.draw.selectedMeasure();
+  editor.parse.all();
   editor.draw.score();
 });
 
@@ -140,7 +143,7 @@ $("input:radio[name='note-accidental']").on("click",function() {
   if(selNote.isRest()) {
     // uncheck this checked radio button after while
     setTimeout(function() {
-      $("input:radio[name='note-accidental']:checked").prop("checked", false);     
+      $("input:radio[name='note-accidental']:checked").prop("checked", false);
     }, 50);
     return;
   }
