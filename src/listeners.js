@@ -169,10 +169,9 @@ $("input:radio[name='note-value']").on("change",function() {
   editor.draw.selectedMeasure();
 });
 
-// call is already in HTML
 // toggle notes dot
-// $("#dotted-checkbox").on("change",function() {
-//   console.log('dot checkbox change');
-//   editor.edit.noteDot();
-//   editor.draw.selectedMeasure();
-// });
+$("#dotted-checkbox").on("change",function() {
+  // console.log('dot checkbox change');
+  editor.edit.noteDot();
+  editor.draw.selectedMeasure();
+});

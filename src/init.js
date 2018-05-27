@@ -52,9 +52,11 @@ uploadedFileName = 'score';
 
 // one <measure> in MusicXML -> one Vex.Flow.Stave
 // all of these three arrays below use share same index
+// TODO create one object for these global arrays and methods for changes in all of them
 gl_VfStaves = [];       // array with currently rendered vexflow measures(Vex.Flow.Stave)
 gl_StaveAttributes = [];  // array of attributes for each measure
 gl_VfStaveNotes = [];   // array of arrays with notes to corresponding stave in gl_VfStaves
+gl_VfVoices = [];       // array of Vex.Flow.Voice objects for check notes duration in measure
 
 editor = {};
 editor.svgElem = $("#svg-container")[0];

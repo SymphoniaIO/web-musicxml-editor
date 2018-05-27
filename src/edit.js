@@ -105,12 +105,37 @@ editor.edit = {
     var measureIndex = getSelectedMeasureIndex();
     var noteIndex = getSelectedNoteIndex();
     var vfStaveNote = gl_VfStaveNotes[measureIndex][noteIndex];
+    var noteDuration = vfStaveNote.getDuration();
 
     if(vfStaveNote.isDotted()) {
       vfStaveNote.removeDot();
       delete scoreJson["score-partwise"].part[0].measure[measureIndex].note[noteIndex].dot;
+      // add rest after the edited note to ballance timing in measure
+      // create new rest with half duration of the note
+      let halfDuration = editor.table.NOTE_VEX_TYPES[
+        editor.table.NOTE_VEX_TYPES.indexOf(noteDuration) - 1];
+      let ballanceRest = new Vex.Flow.StaveNote({
+        keys: ['b/4'],  // suppose rest is always at 3rd line
+        duration: halfDuration + 'r',
+        clef: 'treble',
+        auto_stem: true
+      });
+      ballanceRest.setId('m' + measureIndex + 'n' + noteIndex);
+      // add the rest after edited note
+      gl_VfStaveNotes[measureIndex].splice(noteIndex + 1, 0, ballanceRest);
+      // renumber following notes (add 1)
+      for (var i = noteIndex + 1; i < gl_VfStaveNotes[measureIndex].length; i++) {
+        gl_VfStaveNotes[measureIndex][i].setId('m' + measureIndex + 'n' + i);
+      }
+      // put ballance rest into scoreJson also
+      var divisions = getCurAttrForMeasure(measureIndex, 'xmlDivisions');
+      var xmlDuration = editor.NoteTool.getDurationFromStaveNote(ballanceRest, divisions);
+      let xmlRest = [{ rest: null, duration: xmlDuration }];
+      scoreJson["score-partwise"].part[0].measure[measureIndex].note
+        .splice(noteIndex + 1, 0, xmlRest);
     }
     else {
+      // TODO check, if dot can be added, and if yes, ballance timing in measure by removing/dividing next note
       vfStaveNote.setDot();
       scoreJson["score-partwise"].part[0].measure[measureIndex].note[noteIndex].dot = null;
     }

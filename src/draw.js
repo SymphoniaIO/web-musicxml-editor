@@ -38,6 +38,9 @@ editor.draw = {
     // var count = 0;
     var staveX = 10, staveY = 0;
 
+    // clear voices array
+    gl_VfVoices = [];
+
     // loop over all measures
     for(var staveIndex = 0; staveIndex < gl_VfStaves.length; staveIndex++) {
 
@@ -246,6 +249,16 @@ editor.draw = {
 
       // draw normal voice always
       voice.draw(editor.ctx, stave);
+
+      // add/update voice to global array of voices for check notes duration in measure
+      // drawing all score, and creating voices array
+      if (drawnMeasureIndex + 1 > gl_VfVoices.length) {
+        gl_VfVoices.push(voice);
+      }
+      // drawing only one measure, updating only its one voice
+      else {
+        gl_VfVoices.splice(drawnMeasureIndex, 1, voice);
+      }
 
       beams.forEach(function(beam) {
         beam.setContext(editor.ctx).draw();
