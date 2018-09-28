@@ -52,10 +52,10 @@ editor.add = {
     var noteIndex = getSelectedNoteIndex();
     var vfStaveNote = gl_VfStaveNotes[measureIndex][noteIndex];
 
-    var noteValue = getRadioValue('note-value');
-    // var noteValue = vfStaveNote.getDuration();     //w, h, q, 8, 16
-    var dot = $('#dotted-checkbox').is(":checked") ? 'd' : '';
-    // var dot = vfStaveNote.isDotted() ? 'd' : '';
+    // var noteValue = getRadioValue('note-value');
+    var noteValue = vfStaveNote.getDuration();     //w, h, q, 8, 16
+    // var dot = $('#dotted-checkbox').is(":checked") ? 'd' : '';
+    var dot = vfStaveNote.isDotted() ? 'd' : '';
 
     // create new Vex.Flow.StaveNote
     var newNote = new Vex.Flow.StaveNote({

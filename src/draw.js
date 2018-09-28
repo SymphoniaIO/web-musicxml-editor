@@ -198,11 +198,11 @@ editor.draw = {
 
       // draw the cursor note, if drawing selected measure and cursor note is enabled
       if(editor.mode === 'note' && +selMeasureIndex === drawnMeasureIndex && cursorNoteEnabled) {
-        var noteValue = getRadioValue('note-value');
-        var dot = $('#dotted-checkbox').is(":checked") ? 'd' : '';
+        // var noteValue = getRadioValue('note-value');
+        // var dot = $('#dotted-checkbox').is(":checked") ? 'd' : '';
         // get note properties
-        // var noteValue = selVFStaveNote.getDuration();     //w, h, q, 8, 16
-        // var dot = selVFStaveNote.isDotted() ? 'd' : '';
+        var noteValue = selVFStaveNote.getDuration();     //w, h, q, 8, 16
+        var dot = selVFStaveNote.isDotted() ? 'd' : '';
 
         // create cursor note
         var cursorNote = new Vex.Flow.StaveNote({

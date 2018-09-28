@@ -136,8 +136,15 @@ editor.edit = {
     }
     else {
       // TODO check, if dot can be added, and if yes, ballance timing in measure by removing/dividing next note
-      vfStaveNote.setDot();
-      scoreJson["score-partwise"].part[0].measure[measureIndex].note[noteIndex].dot = null;
+      if (noteDuration !== '64') {  // lowest support duration frame is one 64th
+        vfStaveNote.setDot();
+        scoreJson["score-partwise"].part[0].measure[measureIndex].note[noteIndex].dot = null;
+      }
+      else {
+        // uncheck dot checkbox after while
+        setTimeout(function() { $("#dotted-checkbox:checked").prop("checked", false); }, 50);
+        console.log("cannot have duration frame lower than one 64th")
+      }
     }
   },
 
