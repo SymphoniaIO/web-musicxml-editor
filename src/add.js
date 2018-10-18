@@ -17,13 +17,13 @@ editor.add = {
     gl_StaveAttributes.splice(measureIndex + 1, 0, {});
     // fill measure with whole rest
     var wholeRest = new Vex.Flow.StaveNote({ keys: ["b/4"], duration: "wr" });
-    wholeRest.setId('m' + measureIndex + 'n0');
+    wholeRest.setAttribute('id', 'm' + measureIndex + 'n0');
     gl_VfStaveNotes.splice(measureIndex + 1, 0, [wholeRest]);
 
     // re-number all following notes ids in measures in part
     for(var m = measureIndex + 1; m < gl_VfStaveNotes.length; m++) {
       for(var n = 0; n < gl_VfStaveNotes[m].length; n++) {
-        gl_VfStaveNotes[m][n].setId('m' + m + 'n' + n);
+        gl_VfStaveNotes[m][n].setAttribute('id', 'm' + m + 'n' + n);
       }
     }
 
@@ -64,7 +64,7 @@ editor.add = {
       auto_stem: true
     });
     // set id for note DOM element in svg
-    newNote.setId(editor.selected.note.id);
+    newNote.setAttribute('id', editor.selected.note.id);
 
     if(dot === 'd')
       newNote.addDotToAll();

@@ -24,7 +24,7 @@ editor.edit = {
       auto_stem: true
     });
     // set id for note DOM element in svg
-    newNote.setId(editor.selected.note.id);
+    newNote.setAttribute('id', editor.selected.note.id);
     // set dots for a rest, however, currently supports only one dot(see parse.js line 140)
     if(vfStaveNote.isDotted()) {
       var dots = vfStaveNote.getDots().length;
@@ -74,7 +74,7 @@ editor.edit = {
       newNote.addAccidental(0, new Vex.Flow.Accidental(accOfSelNote));
 
     // set id for note DOM element in svg
-    newNote.setId(editor.selected.note.id);
+    newNote.setAttribute('id', editor.selected.note.id);
     // set dots for a rest, however, currently supports only one dot(see parse.js line 140)
     if(vfStaveNote.isDotted()) {
       var dots = vfStaveNote.getDots().length;
@@ -120,12 +120,12 @@ editor.edit = {
         clef: 'treble',
         auto_stem: true
       });
-      ballanceRest.setId('m' + measureIndex + 'n' + noteIndex);
+      ballanceRest.setAttribute('id', 'm' + measureIndex + 'n' + noteIndex);
       // add the rest after edited note
       gl_VfStaveNotes[measureIndex].splice(noteIndex + 1, 0, ballanceRest);
       // renumber following notes (add 1)
       for (var i = noteIndex + 1; i < gl_VfStaveNotes[measureIndex].length; i++) {
-        gl_VfStaveNotes[measureIndex][i].setId('m' + measureIndex + 'n' + i);
+        gl_VfStaveNotes[measureIndex][i].setAttribute('id', 'm' + measureIndex + 'n' + i);
       }
       // put ballance rest into scoreJson also
       var divisions = getCurAttrForMeasure(measureIndex, 'xmlDivisions');

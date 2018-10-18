@@ -24,7 +24,7 @@ editor.delete = {
     // re-number all following notes ids in measures in part
     for(var m = measureIndex; m < gl_VfStaveNotes.length; m++) {
       for(var n = 0; n < gl_VfStaveNotes[m].length; n++) {
-        gl_VfStaveNotes[m][n].setId('m' + m + 'n' + n);
+        gl_VfStaveNotes[m][n].setAttribute('id', 'm' + m + 'n' + n);
       }
     }
 
@@ -61,7 +61,7 @@ editor.delete = {
       duration: duration + 'r'   // TODO add dots before 'r': /d*/
     });
     // set id for note DOM element in svg
-    vfRest.setId(editor.selected.note.id);
+    vfRest.setAttribute('id', editor.selected.note.id);
     // set dots for a rest, however, currently supports only one dot(see parse.js line 140)
     if(vfStaveNote.isDotted()) {
       var dots = vfStaveNote.getDots().length;

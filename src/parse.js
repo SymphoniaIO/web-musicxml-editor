@@ -186,7 +186,8 @@ editor.parse = {
     // console.log(vfStaveNote.getKeys().toString()+' '+staveNoteDuration);
 
     // set id for note DOM element in svg
-    vfStaveNote.setId('m' + measureIndex + 'n' + noteIndex);
+    vfStaveNote.setAttribute('id', 'm' + measureIndex + 'n' + noteIndex);
+    // or use setId function on line 20773 in vexflow-debug.js
 
     // set accidental
     if(vfAcc !== '')
